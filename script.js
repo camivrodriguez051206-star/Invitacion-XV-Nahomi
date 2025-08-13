@@ -1,5 +1,6 @@
-// Pases por familia
- const pasesPorFamilia = {{
+document.addEventListener("DOMContentLoaded", function() {
+  // TODO: pega aquí TODO tu código actual, tal cual está
+   const pasesPorFamilia = {{
       "Familia González Rodriguez": {{ adultos: 3, niños: 0 }},
       "Familia Rodriguez Espinoza": {{ adultos: 2, niños: 0 }},
       "Familia Rodríguez Cabrera": {{ adultos: 2, niños: 0 }},
@@ -58,74 +59,81 @@
       "Mitzu": {{ adultos: 1, niños: 0 }}
     }};
 
-
-const selectFamilia = document.getElementById("familia");
-for (const familia in pasesPorFamilia) {
-  const opt = document.createElement("option");
-  opt.value = familia;
-  opt.text = familia;
-  selectFamilia.appendChild(opt);
-}
-
-function mostrarPases() {
-  const familia = selectFamilia.value;
-  const datos = pasesPorFamilia[familia];
-  const info = Tienen ${datos.adultos} pase(s) adulto(s) + 
-               (datos.niños > 0 ? ` y ${datos.niños} pase(s) de niño(s)` : "") + .;
-  document.getElementById("pasesDisponibles").textContent = info;
-
-  const selectAdultos = document.getElementById("pasesAdultos");
-  const selectNinos = document.getElementById("pasesNinos");
-  selectAdultos.innerHTML = "";
-  selectNinos.innerHTML = "";
-
-  for (let i = 0; i <= datos.adultos; i++) {
-    selectAdultos.innerHTML += <option value="${i}">${i}</option>;
-  }
-  for (let i = 0; i <= datos.niños; i++) {
-    selectNinos.innerHTML += <option value="${i}">${i}</option>;
+  const selectFamilia = document.getElementById("familia");
+  for (const familia in pasesPorFamilia) {
+    const opt = document.createElement("option");
+    opt.value = familia;
+    opt.text = familia;
+    selectFamilia.appendChild(opt);
   }
 
-  document.getElementById("pasesInfo").classList.remove("hidden");
-}
+  function mostrarPases() {
+    const familia = selectFamilia.value;
+    const datos = pasesPorFamilia[familia];
+    const info = Tienen ${datos.adultos} pase(s) adulto(s) + 
+                 (datos.niños > 0 ? ` y ${datos.niños} pase(s) de niño(s)` : "") + .;
+    document.getElementById("pasesDisponibles").textContent = info;
 
-function enviarWhatsApp() {
-  const familia = selectFamilia.value;
-  const adultos = document.getElementById("pasesAdultos").value;
-  const ninos = document.getElementById("pasesNinos").value;
+    const selectAdultos = document.getElementById("pasesAdultos");
+    const selectNinos = document.getElementById("pasesNinos");
+    selectAdultos.innerHTML = "";
+    selectNinos.innerHTML = "";
 
-  const mensaje = Hola Nahomi, ${familia} confirma ${adultos} pase(s) adulto(s) + 
-                  (ninos > 0 ? ` y ${ninos} pase(s) de niño(s)` : "") + . 🎉;
-  const numero = "5212225253945";
-  const url = https://wa.me/${numero}?text=${encodeURIComponent(mensaje)};
-  window.open(url, '_blank');
+    for (let i = 0; i <= datos.adultos; i++) {
+      selectAdultos.innerHTML += <option value="${i}">${i}</option>;
+    }
+    for (let i = 0; i <= datos.niños; i++) {
+      selectNinos.innerHTML += <option value="${i}">${i}</option>;
+    }
 
-  selectFamilia.remove(selectFamilia.selectedIndex);
-  document.getElementById("pasesInfo").classList.add("hidden");
-}
-
-// Cuenta regresiva
-const fechaEvento = new Date("September 20, 2025 19:00:00").getTime();
-
-function actualizarCuenta() {
-  const ahora = new Date().getTime();
-  const tiempoRestante = fechaEvento - ahora;
-
-  if (tiempoRestante <= 0) {
-    document.getElementById("cuentaRegresiva").innerHTML = "<h2>¡Hoy es el gran día!</h2>";
-    return;
+    document.getElementById("pasesInfo").classList.remove("hidden");
   }
 
-  const dias = Math.floor(tiempoRestante / (1000 * 60 * 60 * 24));
-  const horas = Math.floor((tiempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutos = Math.floor((tiempoRestante % (1000 * 60 * 60)) / (1000 * 60));
-  const segundos = Math.floor((tiempoRestante % (1000 * 60)) / 1000);
+  function enviarWhatsApp() {
+    const familia = selectFamilia.value;
+    const adultos = document.getElementById("pasesAdultos").value;
+    const ninos = document.getElementById("pasesNinos").value;
 
-  document.getElementById("dias").textContent = dias;
-  document.getElementById("horas").textContent = horas;
-  document.getElementById("minutos").textContent = minutos;
-  document.getElementById("segundos").textContent = segundos;
-}
+    const mensaje = Hola Nahomi, ${familia} confirma ${adultos} pase(s) adulto(s) + 
+                    (ninos > 0 ? ` y ${ninos} pase(s) de niño(s)` : "") + . 🎉;
+    const numero = "5212225253945";
+    const url = https://wa.me/${numero}?text=${encodeURIComponent(mensaje)};
+    window.open(url, '_blank');
 
-actualizarCuenta();
-setInterval(actualizarCuenta, 1000);
+    selectFamilia.remove(selectFamilia.selectedIndex);
+    document.getElementById("pasesInfo").classList.add("hidden");
+  }
+
+  // Agrega el evento al select para que al cambiar llame a mostrarPases
+  selectFamilia.addEventListener('change', mostrarPases);
+
+  // Agrega el evento al botón si lo quieres desde JS
+  const btnConfirmar = document.querySelector('button[onclick="enviarWhatsApp()"]');
+  if (btnConfirmar) btnConfirmar.onclick = enviarWhatsApp;
+
+  // Cuenta regresiva
+  const fechaEvento = new Date("September 20, 2025 19:00:00").getTime();
+
+  function actualizarCuenta() {
+    const ahora = new Date().getTime();
+    const tiempoRestante = fechaEvento - ahora;
+
+    if (tiempoRestante <= 0) {
+      document.getElementById("cuentaRegresiva").innerHTML = "<h2>¡Hoy es el gran día!</h2>";
+      return;
+    }
+
+    const dias = Math.floor(tiempoRestante / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((tiempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutos = Math.floor((tiempoRestante % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((tiempoRestante % (1000 * 60)) / 1000);
+
+    document.getElementById("dias").textContent = dias;
+    document.getElementById("horas").textContent = horas;
+    document.getElementById("minutos").textContent = minutos;
+    document.getElementById("segundos").textContent = segundos;
+  }
+
+  actualizarCuenta();
+  setInterval(actualizarCuenta, 1000);
+});
